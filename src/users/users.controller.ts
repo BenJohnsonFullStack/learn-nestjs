@@ -6,6 +6,7 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 
 @Controller('users') // api route --->  /users
@@ -18,9 +19,9 @@ export class UsersController {
    * DELETE /users/:id
    */
 
-  @Get() // GET /users
-  findAll() {
-    return [];
+  @Get() // GET /users or /users?role=value
+  findAll(@Query('role') role?: 'INTERN' | 'ENGINEER' | 'ADMIN') {
+    return [role];
   }
 
   @Get(':id') // GET /users/:id
