@@ -12,6 +12,7 @@ import {
 @Controller('users') //`${baseUrl}/users` (API endpoint)
 export class UsersController {
   @Get() // GET /users or /users?role=value
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   findAll(@Query('role') role?: 'INTERN' | 'ENGINEER' | 'ADMIN') {
     return [];
   }
