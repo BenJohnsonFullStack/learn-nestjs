@@ -10,6 +10,7 @@ import {
   ParseIntPipe,
 } from '@nestjs/common';
 import { UsersService } from './users.service';
+import { CreateUserDto, UpdatedUserDto } from './dto';
 
 @Controller('users') //`${baseUrl}/users` (API endpoint)
 export class UsersController {
@@ -27,28 +28,16 @@ export class UsersController {
   }
 
   @Post() // POST /users
-  create(
-    @Body()
-    user: {
-      name: string;
-      email: string;
-      role: 'INTERN' | 'ENGINEER' | 'ADMIN';
-    },
-  ) {
-    return this.usersService.create(user);
+  create(@Body() createUserDto: CreateUserDto) {
+    return this.usersService.create(createUserDto);
   }
 
   @Patch(':id') // PATCH /users/:id
   update(
     @Param('id', ParseIntPipe) id: number,
-    @Body()
-    updatedUser: {
-      name: string;
-      email: string;
-      role: 'INTERN' | 'ENGINEER' | 'ADMIN';
-    },
+    @Body() updatedUserDto: UpdatedUserDto,
   ) {
-    return this.usersService.update(id, updatedUser);
+    return this.usersService.update(id, updatedUserDto);
   }
 
   @Delete(':id') // DELETE /users/:id
