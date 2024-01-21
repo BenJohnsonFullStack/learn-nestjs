@@ -1,5 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { CreateUserDto, UpdatedUserDto } from './dto';
+import { Role } from '@prisma/client';
 
 @Injectable()
 export class UsersService {
@@ -36,7 +37,7 @@ export class UsersService {
     },
   ];
 
-  findAll(role?: 'INTERN' | 'ENGINEER' | 'ADMIN') {
+  findAll(role?: Role) {
     if (role) {
       const rolesArray = this.users.filter((user) => user.role === role);
       if (rolesArray.length === 0) {
