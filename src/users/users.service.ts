@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
 import { CreateUserDto, UpdatedUserDto } from './dto';
-import { UserRoleEnum } from './enum';
 
 @Injectable()
 export class UsersService {
@@ -37,7 +36,7 @@ export class UsersService {
     },
   ];
 
-  findAll(role?: UserRoleEnum) {
+  findAll(role?: 'INTERN' | 'ENGINEER' | 'ADMIN') {
     if (role) {
       return this.users.filter((user) => user.role === role);
     }
