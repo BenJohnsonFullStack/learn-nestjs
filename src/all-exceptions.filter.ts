@@ -25,22 +25,27 @@ export class AllExceptionsFilter extends BaseExceptionFilter {
     const response = ctx.getResponse<Response>();
     const request = ctx.getRequest<Request>();
 
-    const MyResponseObj: MyResponseObj = {
-      statusCode: 200,
+    const myResponseObj: MyResponseObj = {
+      statusCode: 500,
       timestamp: new Date().toISOString(),
       path: request.url,
       response: '',
     };
 
     if (exception instanceof HttpException) {
-      (MyResponseObj.statusCode = exception.getStatus()),
-        (MyResponseObj.response = exception.getResponse());
+      (myResponseObj.statusCode = exception.getStatus()),
+        (myResponseObj.response = exception.getResponse());
     } else if (exception instanceof PrismaClientValidationError) {
-      (MyResponseObj.statusCode = 422),
-        (MyResponseObj.response = exception.message.replaceAll(/\n/g, ''));
+      (myResponseObj.statusCode = 422),
+        (myResponseObj.response = exception.message.replaceAll(/\n/g, ''));
     } else {
-      MyResponseObj.statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
-      MyResponseObj.response = 'Internal Server Error';
+      myResponseObj.statusCode = HttpStatus.INTERNAL_SERVER_ERROR;
+      myResponseObj.response = 'Internal Server Error';
     }
+
+    response.status(myResponseObj.statusCode).json(myResponseObj);
+
+    this.logger.error(myResponseObj.response, AllExceptionsFilter.name);
+    super.catch(exception, host);
   }
 }
